@@ -1,0 +1,10 @@
+[15-Dec-2024 06:57:26 UTC] PHP Warning:  require(/home/vycspktz/public_html/test/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/vycspktz/public_html/test/public/index.php on line 13
+[15-Dec-2024 06:57:26 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/vycspktz/public_html/test/public/../vendor/autoload.php' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/vycspktz/public_html/test/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/vycspktz/public_html/test/public/index.php on line 13
+[15-Dec-2024 06:57:28 UTC] PHP Warning:  require(/home/vycspktz/public_html/test/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/vycspktz/public_html/test/public/index.php on line 13
+[15-Dec-2024 06:57:28 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/vycspktz/public_html/test/public/../vendor/autoload.php' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/vycspktz/public_html/test/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/vycspktz/public_html/test/public/index.php on line 13
