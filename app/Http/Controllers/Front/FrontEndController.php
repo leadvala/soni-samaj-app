@@ -80,41 +80,60 @@ class FrontEndController extends Controller
     {
         return view('front.pages.register_member');
     }
-    public function store_member(Request $request)
-    {
-        // Validate the request
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'father_name' => 'required|string|max:255',
-            'mother_name' => 'required|string|max:255',
-            'gotra' => 'required|string|max:255',
-            'marital_status' => 'required|string|max:255',
-            'dob' => 'required|string|max:255',
-            'address' => 'required|string|max:500',
-            'permanent_address' => 'required|string|max:500',
-            'qualifications' => 'required|string|max:255',
-            'gender' => 'required|string|max:50',
-            'blood_group' => 'required|string|max:10',
-            'house_type' => 'required|string|max:50',
-            'job_or_business' => 'required|string|max:255',
-            'aadhar' => 'required|file|mimes:jpg,png,pdf|max:2048',
-            'photo' => 'required|file|mimes:jpg,png|max:2048',
-        ]);
+   
+public function store_member(Request $request)
+{
+    $request->validate([
+        'name' => 'required',
+        'father_name' => 'required',
+        'mother_name' => 'required',
+        'dob' => 'required|date',
+        'gender' => 'required',
+        'marital_status' => 'required',
+        'address' => 'required',
+        'permanent_address' => 'required',
+        'gotra_self' => 'required',
+        'gotra_mother' => 'required',
+        'gotra_nani' => 'required',
+        'gotra_dadi' => 'required',
+        'qualifications' => 'required',
+        'blood_group' => 'required',
+        'mobile' => 'required',
+        'whatsapp' => 'required',
+        'photo' => 'required|image|mimes:jpg,jpeg,png',
+    ]);
 
-        if ($request->hasFile('aadhar')) {
-            $validated['aadhar'] = $this->upload_file($request->file('aadhar'), 'aadhar');
-        }
+    $photoPath = $request->file('photo')->store('uploads/members', 'public');
 
-        if ($request->hasFile('photo')) {
-            $validated['photo'] = $this->upload_file($request->file('photo'), 'photo');
-        }
+    Member::create([
+        'name' => $request->name,
+        'father_name' => $request->father_name,
+        'mother_name' => $request->mother_name,
+        'dob' => $request->dob,
+        'gender' => $request->gender,
+        'marital_status' => $request->marital_status,
+        'address' => $request->address,
+        'permanent_address' => $request->permanent_address,
+        'gotra_self' => $request->gotra_self,
+        'gotra_mother' => $request->gotra_mother,
+        'gotra_nani' => $request->gotra_nani,
+        'gotra_dadi' => $request->gotra_dadi,
+        'qualifications' => $request->qualifications,
+        'blood_group' => $request->blood_group,
+        'mobile' => $request->mobile,
+        'whatsapp' => $request->whatsapp,
+        'photo' => $photoPath,
+        'job_or_business' => $request->job_or_business,
+        'job_type' => $request->job_type,
+        'designation' => $request->designation,
+        'work_city' => $request->work_city,
+        'satimata_place' => $request->satimata_place,
+        'bheruji_place' => $request->bheruji_place,
+        'kuldevi_place' => $request->kuldevi_place,
+    ]);
 
-        $member =Member::create($validated);
-
-        // return redirect()->back()->with(['message' => 'Member registered successfully']);
-        return redirect()->route('thankyou');
-
-    }
+         return redirect()->route('thankyou');
+}
 
     public function thankyou()
 {

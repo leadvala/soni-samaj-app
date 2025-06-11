@@ -9,7 +9,7 @@
         <h5 class="mb-3">Join Our WhatsApp Community</h5>
 
         {{-- WhatsApp Join Button --}}
-        <a href="https://chat.whatsapp.com/YOUR_GROUP_LINK_HERE" target="_blank" class="btn btn-success w-100 mb-3">
+        <a href="https://chat.whatsapp.com/LCpInQ2ql7217Hu5B5cZF3" target="_blank" class="btn btn-success w-100 mb-3">
             Join WhatsApp Group
         </a>
 
