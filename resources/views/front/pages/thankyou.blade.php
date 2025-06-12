@@ -9,17 +9,17 @@
         <h5 class="mb-3">Join Our WhatsApp Community</h5>
 
         {{-- WhatsApp Join Button --}}
-        <a href="https://chat.whatsapp.com/LCpInQ2ql7217Hu5B5cZF3" target="_blank" class="btn btn-success w-100 mb-3">
-            Join WhatsApp Group
-        </a>
+  
 
         {{-- QR Code --}}
-        <img src="{{ asset('images/whatsapp_qr.png') }}" alt="WhatsApp Group QR" class="img-fluid" style="max-height: 200px; margin: 0 auto;">
-
+<img src="{{ asset('/whatsapp_qr_code.jpg') }}" alt="WhatsApp Image" class="img-fluid" style="max-height: 200px; margin: 0 auto;">
+      <a href="https://chat.whatsapp.com/LCpInQ2ql7217Hu5B5cZF3" target="_blank" class="btn btn-success w-100 mt-3" style="border-radius:30px;">
+            Join WhatsApp Group
+        </a>
         <p class="mt-3 text-muted" style="font-size: 0.9rem;">Scan the QR code above to join directly from your mobile device.</p>
     </div>
 
     {{-- Back to Home --}}
-    <a href="{{ url('/') }}" class="btn btn-outline-secondary mt-4">← Back to Home</a>
+    <a href="{{ url('/') }}" class="btn btn-outline-danger mt-4" sty>← Back to Home</a>
 </div>
 @endsection

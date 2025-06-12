@@ -31,14 +31,11 @@
                               </select>
                           </div>
                           <div class="language-selector">
-                              <select id="languageSelect">
-                                  <option value="en"
-                                      data-icon="{{ asset('front_assets/assets/images/language/1.svg') }}">English
-                                  </option>
-                                  <option value="sp"
-                                      data-icon="{{ asset('front_assets/assets/images/language/2.svg') }}">Spanish
-                                  </option>
-                              </select>
+                             <select id="languageSelect">
+    <option value="en" data-icon="{{ asset('front_assets/assets/images/language/1.svg') }}">English</option>
+    <option value="hi" data-icon="{{ asset('front_assets/assets/images/language/2.svg') }}">हिंदी</option>
+</select>
+
                               <div class="custom-select-wrapper">
                                   <div class="custom-select"></div>
                                   <div class="custom-arrow"><i class="ti-angle-down"></i></div>
