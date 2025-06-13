@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Front\FrontEndController;
 use App\Http\Controllers\Admin\SliderController;
@@ -12,7 +13,10 @@ use App\Http\Controllers\Admin\CaseStudyController;
 use App\Http\Controllers\Admin\DonationController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\HomeSettingController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\AdminMemberController;
+
+// ========== USER ROUTES ==========
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -35,27 +39,39 @@ Route::get('/events/detail', [FrontEndController::class, 'event_detail'])->name(
 Route::get('/contact', [FrontEndController::class, 'contact'])->name('front.contact');
 Route::get('/register-member', [FrontEndController::class, 'register_member'])->name('front.register_member');
 Route::post('/store-member', [FrontEndController::class, 'store_member'])->name('front.store_member');
-Route::get('/thank-you', [\App\Http\Controllers\Front\FrontEndController::class, 'thankyou'])->name('thankyou');
+Route::get('/thank-you', [FrontEndController::class, 'thankyou'])->name('thankyou');
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware' => 'auth'], function () {
-    Route::controller(SliderController::class)->group(function () {
+// ========== ADMIN LOGIN + PROTECTED ROUTES ==========
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    // Admin login/logout
+    Route::get('login', [AdminAuthController::class, 'loginForm'])->name('login');
+    Route::post('login', [AdminAuthController::class, 'login']);
+    Route::get('logout', [AdminAuthController::class, 'logout'])->name('logout');
+
+    // Admin-only routes
+    Route::middleware('auth:admin')->group(function () {
+        Route::get('dashboard', fn() => view('admin.dashboard'))->name('dashboard');
+        Route::resource('members', AdminMemberController::class);
+
+        // Existing admin modules (now under auth:admin)
         Route::resource('sliders', SliderController::class);
-        Route::post('/sliders/toggle-status/{id}', [SliderController::class, 'toggleStatus'])->name('sliders.toggle-status');
+        Route::post('sliders/toggle-status/{id}', [SliderController::class, 'toggleStatus'])->name('sliders.toggle-status');
 
+        Route::resource('register-sections', RegisterSectionController::class);
+        Route::resource('about-sections', AboutSectionController::class);
+        Route::post('about-sections/tabs', [AboutSectionController::class, 'tabStore'])->name('about-sections.tabs');
+        Route::post('about-sections/tabs/destroy/{id}', [AboutSectionController::class, 'destroyTab'])->name('about-sections.tabs-destroy');
+        Route::post('about-sections/tabs/update', [AboutSectionController::class, 'updateTab'])->name('about-sections.tabs-update');
+
+        Route::resource('pages', PageController::class);
+        Route::resource('service-sections', ServiceSectionController::class);
+        Route::resource('case-studies', CaseStudyController::class);
+        Route::resource('testimonials', TestimonialController::class);
+        Route::resource('home-settings', HomeSettingController::class);
+        Route::resource('blogs', BlogController::class);
+        Route::resource('donations', DonationController::class);
     });
-    Route::resource('/register-sections', RegisterSectionController::class);
-    Route::resource('about-sections', AboutSectionController::class);
-    Route::post('about-sections/tabs', [AboutSectionController::class, 'tabStore'])->name('about-sections.tabs');
-    Route::post('about-sections/tabs/destroy/{id}', [AboutSectionController::class, 'destroyTab'])->name('about-sections.tabs-destroy');
-    Route::post('about-sections/tabs/update', [AboutSectionController::class, 'updateTab'])->name('about-sections.tabs-update');
-
-    Route::resource('/pages', PageController::class);
-    Route::resource('service-sections', ServiceSectionController::class);
-    Route::resource('case-studies', CaseStudyController::class);
-    Route::resource('testimonials', TestimonialController::class);
-    Route::resource('home-settings', HomeSettingController::class);
-    Route::resource('blogs', BlogController::class);
-    Route::resource('donations', DonationController::class);
 });
 
 require __DIR__.'/auth.php';
