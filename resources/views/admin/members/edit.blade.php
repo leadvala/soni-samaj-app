@@ -1,103 +1,169 @@
 @extends('admin.layout')
 @section('content')
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+  .card-custom { border-radius: .5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  .form-section { margin-bottom: 1.5rem; }
+</style>
+
 <div class="container py-4">
-  <h3>Edit Member</h3>
-  <form method="POST" enctype="multipart/form-data" action="{{ route('admin.members.update', $member) }}">
-    @csrf @method('PUT')
-
-    {{-- Personal Info --}}
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <label>Full Name *</label>
-        <input type="text" name="name" class="form-control" value="{{ old('name', $member->name) }}" required>
-      </div>
-      <div class="col-md-6">
-        <label>Father’s Name</label>
-        <input type="text" name="father_name" class="form-control" value="{{ old('father_name', $member->father_name) }}">
-      </div>
+  <div class="card card-custom">
+    <div class="card-header bg-primary text-white text-center">
+      <h4 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Edit Member</h4>
     </div>
+    <div class="card-body">
+      <form method="POST" enctype="multipart/form-data" action="{{ route('admin.members.update', $member) }}">
+        @csrf @method('PUT')
 
-    <div class="row mb-3">
-      <div class="col-md-6"><label>Mother’s Name</label><input type="text" name="mother_name" class="form-control" value="{{ old('mother_name', $member->mother_name) }}"></div>
-      <div class="col-md-3"><label>Date of Birth</label><input type="date" name="dob" class="form-control" value="{{ old('dob', $member->dob) }}"></div>
-      <!-- <div class="col-md-3"><label>Gender</label><select name="gender" class="form-control"><option value="">Select</option><option value="Male" {{ old('gender', $member->gender)=='Male'?'selected':'' }}>Male</option><option value="Female" {{ old('gender', $member->gender)=='Female'?'selected':'' }}>Female</option></select></div> -->
+        <div class="row form-section">
+          <div class="col-md-6 form-floating mb-3">
+            <input name="name" id="name" type="text" class="form-control" value="{{ old('name', $member->name) }}" required>
+            <label for="name">Full Name *</label>
+          </div>
+          <div class="col-md-6 form-floating mb-3">
+            <input name="father_name" id="father_name" type="text" class="form-control" value="{{ old('father_name', $member->father_name) }}">
+            <label for="father_name">Father’s Name</label>
+          </div>
+        </div>
+
+        <div class="row form-section">
+          <div class="col-md-4 form-floating mb-3">
+            <input name="mother_name" id="mother_name" type="text" class="form-control" value="{{ old('mother_name', $member->mother_name) }}">
+            <label for="mother_name">Mother’s Name</label>
+          </div>
+          <div class="col-md-4 form-floating mb-3">
+            <input name="dob" id="dob" type="date" class="form-control" value="{{ old('dob', $member->dob) }}">
+            <label for="dob">Date of Birth</label>
+          </div>
+          <div class="col-md-4 form-floating mb-3">
+            <select name="gender" id="gender" class="form-select" required>
+              <option value="" disabled>Select Gender *</option>
+              <option value="Male" {{ old('gender',$member->gender)=='Male'?'selected':'' }}>Male</option>
+              <option value="Female" {{ old('gender',$member->gender)=='Female'?'selected':'' }}>Female</option>
+              <option value="Other" {{ old('gender',$member->gender)=='Other'?'selected':'' }}>Other</option>
+            </select>
+            <label for="gender">Gender *</label>
+          </div>
+        </div>
+
+        <div class="row form-section">
+          <div class="col-md-6 form-floating mb-3">
+            <select name="marital_status" id="marital_status" class="form-select">
+              <option value="" disabled>Select Marital Status</option>
+              <option value="Single" {{ old('marital_status',$member->marital_status)=='Single'?'selected':'' }}>Single</option>
+              <option value="Married" {{ old('marital_status',$member->marital_status)=='Married'?'selected':'' }}>Married</option>
+            </select>
+            <label for="marital_status">Marital Status</label>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-floating mb-3">
+            <textarea name="address" id="address" class="form-control" style="height:90px">{{ old('address',$member->address) }}</textarea>
+            <label for="address">Current Address</label>
+          </div>
+          <div class="form-floating mb-3">
+            <textarea name="permanent_address" id="perm_address" class="form-control" style="height:90px">{{ old('permanent_address',$member->permanent_address) }}</textarea>
+            <label for="perm_address">Permanent Address</label>
+          </div>
+        </div>
+
+        <div class="row form-section">
+          @foreach(['gotra','gotra_self','gotra_mother','gotra_nani','gotra_dadi'] as $field)
+          <div class="col-md-2 form-floating mb-3">
+            <input name="{{ $field }}" id="{{ $field }}" type="text" class="form-control" value="{{ old($field,$member->$field) }}">
+            <label for="{{ $field }}">{{ ucwords(str_replace('_',' ',$field)) }}</label>
+          </div>
+          @endforeach
+        </div>
+
+        <div class="row form-section">
+          <div class="col-md-6 form-floating mb-3">
+            <input name="qualifications" id="qualifications" type="text" class="form-control" value="{{ old('qualifications',$member->qualifications) }}">
+            <label for="qualifications">Qualifications</label>
+          </div>
+          <div class="col-md-6 form-floating mb-3">
+            <select name="blood_group" id="blood_group" class="form-select">
+              <option value="" disabled>Select Blood Group</option>
+              @foreach(['A+','A-','B+','B-','O+','O-','AB+','AB-'] as $bg)
+              <option value="{{ $bg }}" {{ old('blood_group',$member->blood_group)==$bg?'selected':'' }}>{{ $bg }}</option>
+              @endforeach
+            </select>
+            <label for="blood_group">Blood Group</label>
+          </div>
+        </div>
+
+        <div class="row form-section">
+          <div class="col-md-6 form-floating mb-3">
+            <input name="mobile" id="mobile" type="text" class="form-control" value="{{ old('mobile',$member->mobile) }}" required>
+            <label for="mobile">Mobile *</label>
+          </div>
+          <div class="col-md-6 form-floating mb-3">
+            <input name="whatsapp" id="whatsapp" type="text" class="form-control" value="{{ old('whatsapp',$member->whatsapp) }}">
+            <label for="whatsapp">WhatsApp</label>
+          </div>
+        </div>
+
+        <div class="row form-section">
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Photo</label>
+            <input type="file" name="photo" class="form-control">
+            @if($member->photo)
+            <img src="{{ asset('storage/'.$member->photo) }}" class="img-thumbnail mt-2" style="max-width:120px">
+            @endif
+          </div>
+        </div>
+
+        <div class="row form-section">
+          <div class="col-md-6 form-floating mb-3">
+            <input name="job_or_business" id="job_or_business" type="text" class="form-control" value="{{ old('job_or_business',$member->job_or_business) }}">
+            <label for="job_or_business">Job or Business</label>
+          </div>
+          <div class="col-md-6 form-floating mb-3">
+            <select name="job_type" id="job_type" class="form-select">
+              <option value="" disabled>Select Job Type</option>
+              <option value="Private" {{ old('job_type',$member->job_type)=='Private'?'selected':'' }}>Private</option>
+              <option value="Government" {{ old('job_type',$member->job_type)=='Government'?'selected':'' }}>Government</option>
+            </select>
+            <label for="job_type">Job Type</label>
+          </div>
+        </div>
+
+        <div class="row form-section">
+          <div class="col-md-6 form-floating mb-3">
+            <input name="designation" id="designation" type="text" class="form-control" value="{{ old('designation',$member->designation) }}">
+            <label for="designation">Designation</label>
+          </div>
+          <div class="col-md-6 form-floating mb-3">
+            <input name="work_city" id="work_city" type="text" class="form-control" value="{{ old('work_city',$member->work_city) }}">
+            <label for="work_city">Work City</label>
+          </div>
+        </div>
+
+        <div class="row form-section">
+          <div class="col-md-4 form-floating mb-3">
+            <input name="satimata_place" id="satimata_place" type="text" class="form-control" value="{{ old('satimata_place',$member->satimata_place) }}">
+            <label for="satimata_place">Satimata Place</label>
+          </div>
+          <div class="col-md-4 form-floating mb-3">
+            <input name="bheruji_place" id="bheruji_place" type="text" class="form-control" value="{{ old('bheruji_place',$member->bheruji_place) }}">
+            <label for="bheruji_place">Bheruji Place</label>
+          </div>
+          <div class="col-md-4 form-floating mb-3">
+            <input name="kuldevi_place" id="kuldevi_place" type="text" class="form-control" value="{{ old('kuldevi_place',$member->kuldevi_place) }}">
+            <label for="kuldevi_place">Kuldevi Place</label>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-primary px-5">
+            <i class="bi bi-save me-2"></i>Update Member
+          </button>
+          <a href="{{ route('admin.members.index') }}" class="btn btn-outline-secondary px-5 ms-2">Cancel</a>
+        </div>
+
+      </form>
     </div>
-
-    {{-- Marital Status --}}
-    <div class="mb-3">
-      <label>Marital Status</label>
-<select name="gender" class="form-control" required>
-  <option value="">Select Gender</option>
-  <option value="Male" {{ old('gender', $member->gender)=='Male'?'selected':'' }}>Male</option>
-  <option value="Female" {{ old('gender', $member->gender)=='Female'?'selected':'' }}>Female</option>
-</select>
-
-
-    </div>
-
-    {{-- Address --}}
-    <div class="mb-3">
-      <label>Current Address</label>
-      <textarea name="address" class="form-control">{{ old('address', $member->address) }}</textarea>
-    </div>
-    <div class="mb-3">
-      <label>Permanent Address</label>
-      <textarea name="permanent_address" class="form-control">{{ old('permanent_address', $member->permanent_address) }}</textarea>
-    </div>
-
-    {{-- Gotra --}}
-    <div class="row mb-3">
-      <div class="col-md-3"><label>Gotra</label><input type="text" name="gotra" class="form-control" value="{{ old('gotra', $member->gotra) }}"></div>
-      <div class="col-md-3"><label>Gotra – Self</label><input type="text" name="gotra_self" class="form-control" value="{{ old('gotra_self', $member->gotra_self) }}"></div>
-      <div class="col-md-3"><label>Gotra – Mother</label><input type="text" name="gotra_mother" class="form-control" value="{{ old('gotra_mother', $member->gotra_mother) }}"></div>
-      <div class="col-md-3"><label>Gotra – Nani</label><input type="text" name="gotra_nani" class="form-control" value="{{ old('gotra_nani', $member->gotra_nani) }}"></div>
-      <div class="col-md-3 mt-2"><label>Gotra – Dadi</label><input type="text" name="gotra_dadi" class="form-control" value="{{ old('gotra_dadi', $member->gotra_dadi) }}"></div>
-    </div>
-
-    {{-- Qualifications & Blood --}}
-    <div class="row mb-3">
-      <div class="col-md-6"><label>Qualifications</label><input type="text" name="qualifications" class="form-control" value="{{ old('qualifications', $member->qualifications) }}"></div>
-      <div class="col-md-6"><label>Blood Group</label><select name="blood_group" class="form-control"><option value="">Select</option>@foreach(['A+','A-','B+','B-','O+','O-','AB+','AB-'] as $bg)<option value="{{ $bg }}" {{ old('blood_group', $member->blood_group)==$bg?'selected':'' }}>{{ $bg }}</option>@endforeach</select></div>
-    </div>
-
-    {{-- House Type --}}
-    <!-- <div class="mb-3"><label>House Type</label><input type="text" name="house_type" class="form-control" value="{{ old('house_type', $member->house_type) }}"></div> -->
-
-    {{-- Contact --}}
-    <div class="row mb-3">
-      <div class="col-md-6"><label>Mobile *</label><input type="text" name="mobile" class="form-control" value="{{ old('mobile', $member->mobile) }}" required></div>
-      <div class="col-md-6"><label>WhatsApp</label><input type="text" name="whatsapp" class="form-control" value="{{ old('whatsapp', $member->whatsapp) }}"></div>
-    </div>
-
-    {{-- Photo Upload --}}
-    <div class="mb-3">
-      <label>Photo</label>
-      <input type="file" name="photo" class="form-control">
-      @if($member->photo)
-        <img src="{{ asset('storage/' . $member->photo) }}" alt="Photo" class="mt-2" width="120">
-      @endif
-    </div>
-
-    {{-- Job / Business --}}
-    <div class="row mb-3">
-      <div class="col-md-6"><label>Job or Business</label><input type="text" name="job_or_business" class="form-control" value="{{ old('job_or_business', $member->job_or_business) }}"></div>
-      <div class="col-md-6"><label>Job Type</label><select name="job_type" class="form-control"><option value="">Select</option><option value="Private" {{ old('job_type', $member->job_type)=='Private'?'selected':'' }}>Private</option><option value="Government" {{ old('job_type', $member->job_type)=='Government'?'selected':'' }}>Government</option></select></div>
-    </div>
-
-    <div class="row mb-3">
-      <div class="col-md-6"><label>Designation</label><input type="text" name="designation" class="form-control" value="{{ old('designation', $member->designation) }}"></div>
-      <div class="col-md-6"><label>Work City</label><input type="text" name="work_city" class="form-control" value="{{ old('work_city', $member->work_city) }}"></div>
-    </div>
-
-    {{-- Religious Info --}}
-    <div class="row mb-3">
-      <div class="col-md-4"><label>Satimata Place</label><input type="text" name="satimata_place" class="form-control" value="{{ old('satimata_place', $member->satimata_place) }}"></div>
-      <div class="col-md-4"><label>Bheruji Place</label><input type="text" name="bheruji_place" class="form-control" value="{{ old('bheruji_place', $member->bheruji_place) }}"></div>
-      <div class="col-md-4"><label>Kuldevi Place</label><input type="text" name="kuldevi_place" class="form-control" value="{{ old('kuldevi_place', $member->kuldevi_place) }}"></div>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Update Member</button>
-    <a href="{{ route('admin.members.index') }}" class="btn btn-secondary">Cancel</a>
-  </form>
+  </div>
 </div>
 @endsection

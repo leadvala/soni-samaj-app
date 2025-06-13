@@ -12,20 +12,27 @@ class AdminMemberController extends Controller
      * Display a listing of members with search & pagination.
      */
     public function index(Request $request)
-    {
-        $search = $request->query('search');
+{
+    $search = $request->query('search');
 
-        $members = Member::query()
-            ->when($search, fn($query) =>
-                $query->where('name', 'like', "%$search%")
-                      ->orWhere('gotra', 'like', "%$search%")
-                      ->orWhere('mobile', 'like', "%$search%")
-            )
-            ->paginate(10)
-            ->withQueryString();
+    $members = Member::query()
+        ->when($search, function($query, $search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name',            'like', "%{$search}%")
+                  ->orWhere('gotra',         'like', "%{$search}%")
+                  ->orWhere('gotra_self',    'like', "%{$search}%")
+                  ->orWhere('gotra_mother',  'like', "%{$search}%")
+                  ->orWhere('gotra_nani',    'like', "%{$search}%")
+                  ->orWhere('gotra_dadi',    'like', "%{$search}%")
+                  ->orWhere('mobile',        'like', "%{$search}%");
+            });
+        })
+        ->paginate(10)
+        ->withQueryString();
 
-        return view('admin.members.index', compact('members', 'search'));
-    }
+    return view('admin.members.index', compact('members', 'search'));
+}
+
 
     /**
      * Show the form for creating a new member.
