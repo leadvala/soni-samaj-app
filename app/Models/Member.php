@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Member extends Model
 {
     protected $fillable = [
-        'name', 'father_name', 'mother_name', 'dob', 'gender', 'marital_status',
-    'address', 'permanent_address', 'gotra_self', 'gotra_mother', 'gotra_nani', 'gotra_dadi',
-    'qualifications', 'blood_group', 'mobile', 'whatsapp', 'photo',
-    'job_or_business', 'job_type', 'designation', 'work_city',
+        
+        'name', 'father_name', 'mother_name',
+    'gotra', 'gotra_self', 'gotra_mother', 'gotra_nani', 'gotra_dadi',
+    'marital_status', 'dob', 'address', 'permanent_address',
+    'district', 'area',
+    'photo', 'qualifications', 'gender', 'blood_group',
+    'house_type', 'job_or_business', 'business_name', 'business_location',
+    'job_type', 'designation', 'work_place',
+    'mobile', 'whatsapp',
     'satimata_place', 'bheruji_place', 'kuldevi_place'
     ];
 
