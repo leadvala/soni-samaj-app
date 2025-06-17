@@ -3,18 +3,20 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Front\FrontEndController;
+
+// Admin-related controllers
+use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\AdminMemberController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\RegisterSectionController;
 use App\Http\Controllers\Admin\AboutSectionController;
-use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\ServiceSectionController;
 use App\Http\Controllers\Admin\CaseStudyController;
 use App\Http\Controllers\Admin\DonationController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\HomeSettingController;
-use App\Http\Controllers\AdminAuthController;
-use App\Http\Controllers\AdminMemberController;
+use App\Http\Controllers\Admin\BlogController;
 
 // ========== USER ROUTES ==========
 
@@ -52,9 +54,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Admin-only routes
     Route::middleware('auth:admin')->group(function () {
         Route::get('dashboard', fn() => view('admin.dashboard'))->name('dashboard');
+
+        // ✅ Key fix: ensure this uses the correct controller
         Route::resource('members', AdminMemberController::class);
 
-        // Existing admin modules (now under auth:admin)
+        // Other admin module routes
         Route::resource('sliders', SliderController::class);
         Route::post('sliders/toggle-status/{id}', [SliderController::class, 'toggleStatus'])->name('sliders.toggle-status');
 
