@@ -97,49 +97,53 @@ class AdminMemberController extends Controller
         return view('admin.members.edit', compact('member'));
     }
 
-    public function update(Request $request, Member $member)
-    {
-        $data = $request->validate([
-            'name'               => 'required|string|max:255',
-            'father_name'        => 'nullable|string|max:255',
-            'mother_name'        => 'nullable|string|max:255',
-            'dob'                => 'nullable|date',
-            'gender'             => 'required|string|max:50',
-            'marital_status'     => 'required|string|max:50',
-            'address'            => 'required|string',
-            'permanent_address'  => 'required|string',
-            'district'           => 'required|string|max:255',
-            'city'               => 'required|string|max:255',
-            'area'               => 'required|string',
-            'gotra'              => 'required|string|max:255',
-            'satimata_place'     => 'nullable|string|max:255',
-            'bheruji_place'      => 'nullable|string|max:255',
-            'kuldevi_place'      => 'nullable|string|max:255',
-            'qualifications'     => 'required|string|max:255',
-            'blood_group'        => 'required|string|max:3',
-            'mobile'             => 'required|string|max:20',
-            'whatsapp'           => 'nullable|string|max:20',
-            'job_or_business'    => 'nullable|string|max:100',
-            'business_location'  => 'nullable|string|max:255',
-            'job_type'           => 'nullable|string|max:50',
-            'designation'        => 'nullable|string|max:255',
-            'work_city'          => 'nullable|string|max:255',
-            'photo'              => 'nullable|image|max:2048',
-        ]);
+public function update(Request $request, Member $member)
+{
+    $data = $request->validate([
+        'name'               => 'required|string|max:255',
+        'father_name'        => 'nullable|string|max:255',
+        'mother_name'        => 'nullable|string|max:255',
+        'dob'                => 'nullable|date',
+        'gender'             => 'nullable|string|max:50',
+        'marital_status'     => 'required|string|max:50',
+        'address'            => 'required|string',
+        'permanent_address'  => 'required|string',
+        'district'           => 'required|string|max:255',
+        'city'               => 'required|string|max:255',
+        'area'               => 'nullable|string',
+        'gotra'              => 'nullable|string|max:255',
+        'gotra_self'         => 'nullable|string|max:255',
+        'gotra_mother'       => 'nullable|string|max:255',
+        'gotra_nani'         => 'nullable|string|max:255',
+        'gotra_dadi'         => 'nullable|string|max:255',
+        'satimata_place'     => 'nullable|string|max:255',
+        'bheruji_place'      => 'nullable|string|max:255',
+        'kuldevi_place'      => 'nullable|string|max:255',
+        'qualifications'     => 'required|string|max:255',
+        'blood_group'        => 'nullable|string|max:3',
+        'mobile'             => 'required|string|max:20',
+        'whatsapp'           => 'nullable|string|max:20',
+        'job_or_business'    => 'nullable|string|max:100',
+        'business_name'      => 'nullable|string|max:255',
+        'business_location'  => 'nullable|string|max:255',
+        'job_type'           => 'nullable|string|max:50',
+        'designation'        => 'nullable|string|max:255',
+        'work_city'          => 'nullable|string|max:255',
+        'photo'              => 'nullable|image|max:2048',
+    ]);
 
-        if ($request->hasFile('photo')) {
-            if ($member->photo) {
-                Storage::disk('public')->delete($member->photo);
-            }
-            $data['photo'] = $request->file('photo')->store('members/photos', 'public');
+    if ($request->hasFile('photo')) {
+        if ($member->photo) {
+            Storage::disk('public')->delete($member->photo);
         }
-
-        $member->update($data);
-
-        return redirect()
-            ->route('admin.members.index')
-            ->with('success', 'Member updated successfully.');
+        $data['photo'] = $request->file('photo')->store('members/photos', 'public');
     }
+
+    $member->update($data);
+
+    return redirect()->route('admin.members.index')->with('success', 'Member updated successfully.');
+}
+
 
     public function destroy(Member $member)
     {

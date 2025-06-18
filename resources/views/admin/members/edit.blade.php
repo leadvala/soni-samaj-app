@@ -27,131 +27,111 @@
         </div>
 
         <div class="row form-section">
-          <div class="col-md-4 form-floating mb-3">
-            <input name="mother_name" id="mother_name" type="text" class="form-control" value="{{ old('mother_name', $member->mother_name) }}">
-            <label for="mother_name">Mother’s Name</label>
-          </div>
-          <div class="col-md-4 form-floating mb-3">
-            <input name="dob" id="dob" type="date" class="form-control" value="{{ old('dob', $member->dob) }}">
-            <label for="dob">Date of Birth</label>
-          </div>
-          <div class="col-md-4 form-floating mb-3">
-            <select name="gender" id="gender" class="form-select" required>
-              <option value="" disabled>Select Gender *</option>
-              <option value="Male" {{ old('gender',$member->gender)=='Male'?'selected':'' }}>Male</option>
-              <option value="Female" {{ old('gender',$member->gender)=='Female'?'selected':'' }}>Female</option>
-              <option value="Other" {{ old('gender',$member->gender)=='Other'?'selected':'' }}>Other</option>
-            </select>
-            <label for="gender">Gender *</label>
-          </div>
-        </div>
-
-        <div class="row form-section">
           <div class="col-md-6 form-floating mb-3">
-            <select name="marital_status" id="marital_status" class="form-select">
-              <option value="" disabled>Select Marital Status</option>
-              <option value="Single" {{ old('marital_status',$member->marital_status)=='Single'?'selected':'' }}>Single</option>
-              <option value="Married" {{ old('marital_status',$member->marital_status)=='Married'?'selected':'' }}>Married</option>
-            </select>
-            <label for="marital_status">Marital Status</label>
+            <input name="mobile" id="mobile" type="text" class="form-control" value="{{ old('mobile', $member->mobile) }}">
+            <label for="mobile">Mobile</label>
           </div>
         </div>
 
         <div class="form-section">
           <div class="form-floating mb-3">
-            <textarea name="address" id="address" class="form-control" style="height:90px">{{ old('address',$member->address) }}</textarea>
-            <label for="address">Current Address</label>
+            <textarea name="address" id="address" class="form-control" style="height:120px">{{ old('address',$member->address) }}</textarea>
+            <label for="address">Area / Address</label>
           </div>
-          <div class="form-floating mb-3">
-            <textarea name="permanent_address" id="perm_address" class="form-control" style="height:90px">{{ old('permanent_address',$member->permanent_address) }}</textarea>
-            <label for="perm_address">Permanent Address</label>
+          <div class="row">
+            <div class="col-md-4 form-floating mb-3">
+              <input name="city" type="text" class="form-control" value="{{ old('city', $member->city) }}">
+              <label>City</label>
+            </div>
+            <div class="col-md-4 form-floating mb-3">
+              <select name="district" class="form-select">
+                <option value="" disabled selected>Select District</option>
+                @foreach(['Udaipur', 'Jaipur', 'Jodhpur', 'Ajmer'] as $dist)
+                <option value="{{ $dist }}" {{ old('district',$member->district)==$dist?'selected':'' }}>{{ $dist }}</option>
+                @endforeach
+              </select>
+              <label>District</label>
+            </div>
+            <div class="col-md-4 form-floating mb-3">
+              <input name="permanent_address" class="form-control" value="{{ old('permanent_address', $member->permanent_address) }}">
+              <label>Permanent Address</label>
+            </div>
           </div>
         </div>
 
         <div class="row form-section">
-          @foreach(['gotra','gotra_self','gotra_mother','gotra_nani','gotra_dadi'] as $field)
-          <div class="col-md-2 form-floating mb-3">
-            <input name="{{ $field }}" id="{{ $field }}" type="text" class="form-control" value="{{ old($field,$member->$field) }}">
-            <label for="{{ $field }}">{{ ucwords(str_replace('_',' ',$field)) }}</label>
+          @foreach(['gotra_self'=>'Self Gotra','gotra_mother'=>'Mother Gotra','gotra_nani'=>'Nani Gotra','gotra_dadi'=>'Dadi Gotra'] as $field => $label)
+          <div class="col-md-3 form-floating mb-3">
+            <select name="{{ $field }}" class="form-select">
+              <option value="" disabled selected>Select Gotra</option>
+              @foreach(['Bhardwaj','Gautam','Kashyap','Vats','Vashishtha'] as $g)
+              <option value="{{ $g }}" {{ old($field,$member->$field)==$g?'selected':'' }}>{{ $g }}</option>
+              @endforeach
+            </select>
+            <label>{{ $label }}</label>
           </div>
           @endforeach
         </div>
 
         <div class="row form-section">
-          <div class="col-md-6 form-floating mb-3">
-            <input name="qualifications" id="qualifications" type="text" class="form-control" value="{{ old('qualifications',$member->qualifications) }}">
-            <label for="qualifications">Qualifications</label>
-          </div>
-          <div class="col-md-6 form-floating mb-3">
-            <select name="blood_group" id="blood_group" class="form-select">
-              <option value="" disabled>Select Blood Group</option>
-              @foreach(['A+','A-','B+','B-','O+','O-','AB+','AB-'] as $bg)
-              <option value="{{ $bg }}" {{ old('blood_group',$member->blood_group)==$bg?'selected':'' }}>{{ $bg }}</option>
+          <div class="col-md-4 form-floating mb-3">
+            <select name="kuldevi_place" class="form-select">
+              <option value="" disabled selected>Select Kuldevi</option>
+              @foreach(['Ashapura', 'Chamunda', 'Karni Mata'] as $val)
+              <option value="{{ $val }}" {{ old('kuldevi_place', $member->kuldevi_place)==$val?'selected':'' }}>{{ $val }}</option>
               @endforeach
             </select>
-            <label for="blood_group">Blood Group</label>
+            <label>Kuldevi</label>
+          </div>
+          <div class="col-md-4 form-floating mb-3">
+            <select name="bheruji_place" class="form-select">
+              <option value="" disabled selected>Select Bheruji</option>
+              @foreach(['Bheru Mandir A', 'Bheru Mandir B'] as $val)
+              <option value="{{ $val }}" {{ old('bheruji_place', $member->bheruji_place)==$val?'selected':'' }}>{{ $val }}</option>
+              @endforeach
+            </select>
+            <label>Bheruji</label>
+          </div>
+          <div class="col-md-4 form-floating mb-3">
+            <select name="satimata_place" class="form-select">
+              <option value="" disabled selected>Select Satimata</option>
+              @foreach(['Sati Mata A', 'Sati Mata B'] as $val)
+              <option value="{{ $val }}" {{ old('satimata_place', $member->satimata_place)==$val?'selected':'' }}>{{ $val }}</option>
+              @endforeach
+            </select>
+            <label>Satimata</label>
           </div>
         </div>
 
         <div class="row form-section">
           <div class="col-md-6 form-floating mb-3">
-            <input name="mobile" id="mobile" type="text" class="form-control" value="{{ old('mobile',$member->mobile) }}" required>
-            <label for="mobile">Mobile *</label>
+            <select name="marital_status" class="form-select">
+              <option value="" disabled>Select Marital Status</option>
+              @foreach(['Single','Married','Widow'] as $m)
+              <option value="{{ $m }}" {{ old('marital_status', $member->marital_status)==$m ? 'selected':'' }}>{{ $m }}</option>
+              @endforeach
+            </select>
+            <label>Marital Status</label>
           </div>
           <div class="col-md-6 form-floating mb-3">
-            <input name="whatsapp" id="whatsapp" type="text" class="form-control" value="{{ old('whatsapp',$member->whatsapp) }}">
-            <label for="whatsapp">WhatsApp</label>
-          </div>
-        </div>
-
-        <div class="row form-section">
-          <div class="col-md-4 mb-3">
-            <label class="form-label">Photo</label>
-            <input type="file" name="photo" class="form-control">
-            @if($member->photo)
-            <img src="{{ asset('storage/'.$member->photo) }}" class="img-thumbnail mt-2" style="max-width:120px">
-            @endif
+            <select name="qualifications" class="form-select">
+              <option value="" disabled>Select Qualification</option>
+              @foreach(['10th','12th','Graduate','Postgraduate','PhD'] as $q)
+              <option value="{{ $q }}" {{ old('qualifications', $member->qualifications)==$q ? 'selected':'' }}>{{ $q }}</option>
+              @endforeach
+            </select>
+            <label>Education</label>
           </div>
         </div>
 
         <div class="row form-section">
           <div class="col-md-6 form-floating mb-3">
             <input name="job_or_business" id="job_or_business" type="text" class="form-control" value="{{ old('job_or_business',$member->job_or_business) }}">
-            <label for="job_or_business">Job or Business</label>
-          </div>
-          <div class="col-md-6 form-floating mb-3">
-            <select name="job_type" id="job_type" class="form-select">
-              <option value="" disabled>Select Job Type</option>
-              <option value="Private" {{ old('job_type',$member->job_type)=='Private'?'selected':'' }}>Private</option>
-              <option value="Government" {{ old('job_type',$member->job_type)=='Government'?'selected':'' }}>Government</option>
-            </select>
-            <label for="job_type">Job Type</label>
-          </div>
-        </div>
-
-        <div class="row form-section">
-          <div class="col-md-6 form-floating mb-3">
-            <input name="designation" id="designation" type="text" class="form-control" value="{{ old('designation',$member->designation) }}">
-            <label for="designation">Designation</label>
+            <label for="job_or_business">Business Name / Job</label>
           </div>
           <div class="col-md-6 form-floating mb-3">
             <input name="work_city" id="work_city" type="text" class="form-control" value="{{ old('work_city',$member->work_city) }}">
-            <label for="work_city">Work City</label>
-          </div>
-        </div>
-
-        <div class="row form-section">
-          <div class="col-md-4 form-floating mb-3">
-            <input name="satimata_place" id="satimata_place" type="text" class="form-control" value="{{ old('satimata_place',$member->satimata_place) }}">
-            <label for="satimata_place">Satimata Place</label>
-          </div>
-          <div class="col-md-4 form-floating mb-3">
-            <input name="bheruji_place" id="bheruji_place" type="text" class="form-control" value="{{ old('bheruji_place',$member->bheruji_place) }}">
-            <label for="bheruji_place">Bheruji Place</label>
-          </div>
-          <div class="col-md-4 form-floating mb-3">
-            <input name="kuldevi_place" id="kuldevi_place" type="text" class="form-control" value="{{ old('kuldevi_place',$member->kuldevi_place) }}">
-            <label for="kuldevi_place">Kuldevi Place</label>
+            <label for="work_city">Work Place</label>
           </div>
         </div>
 
