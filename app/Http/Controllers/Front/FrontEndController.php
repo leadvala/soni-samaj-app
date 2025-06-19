@@ -14,6 +14,7 @@ use App\Models\Donation;
 use App\Models\HomePageSetting;
 use App\Models\ServiceSection;
 use App\Models\Testimonial;
+use App\Models\BadhaiEntry;
 
 class FrontEndController extends Controller
 {
@@ -70,6 +71,13 @@ class FrontEndController extends Controller
     {
         return view('front.pages.event_detail');
     }
+
+
+    public function badhai()
+{
+    $badhaiEntries = BadhaiEntry::latest()->paginate(12); // Paginate by 12 per page
+    return view('front.badhai.index', compact('badhaiEntries'));
+}
 
     public function contact()
     {

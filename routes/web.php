@@ -17,7 +17,8 @@ use App\Http\Controllers\Admin\DonationController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\HomeSettingController;
 use App\Http\Controllers\Admin\BlogController;
-
+use App\Http\Controllers\AdminBadhaiController;
+// use App\Http\Controllers\Front\FrontEndController;
 // ========== USER ROUTES ==========
 
 Route::get('/dashboard', function () {
@@ -42,6 +43,7 @@ Route::get('/contact', [FrontEndController::class, 'contact'])->name('front.cont
 Route::get('/register-member', [FrontEndController::class, 'register_member'])->name('front.register_member');
 Route::post('/store-member', [FrontEndController::class, 'store_member'])->name('front.store_member');
 Route::get('/thank-you', [FrontEndController::class, 'thankyou'])->name('thankyou');
+Route::get('/badhai', [FrontEndController::class, 'badhai'])->name('front.badhai');
 
 // ========== ADMIN LOGIN + PROTECTED ROUTES ==========
 
@@ -54,7 +56,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Admin-only routes
     Route::middleware('auth:admin')->group(function () {
         Route::get('dashboard', fn() => view('admin.dashboard'))->name('dashboard');
-
+         
+        Route::resource('badhai', AdminBadhaiController::class); 
         // ✅ Key fix: ensure this uses the correct controller
         Route::resource('members', AdminMemberController::class);
 

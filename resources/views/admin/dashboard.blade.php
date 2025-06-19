@@ -11,6 +11,11 @@
       <a href="{{ route('admin.members.index') }}" class="btn btn-success btn-lg mt-3 mt-md-0">
         <i class="bi bi-people-fill"></i> Manage Members
       </a>
+       <a href="{{ route('admin.badhai.index') }}" class="btn btn-primary btn-lg mt-3 mt-md-0">
+        <i class="bi bi-people-fill"></i> Manage  Badhai
+      </a>
+      <!-- <li><a href="{{ route('admin.badhai.index') }}">Manage</a></li> -->
+
     </div>
   </div>
 
