@@ -9,8 +9,8 @@ use App\Models\Admin;
 class AdminSeeder extends Seeder {
     public function run(): void {
         Admin::create([
-            'email' => 'admin@samaj.com',
-            'password' => Hash::make('admin123'), // change in production
+            'email' => 'admin@samaj2.com',
+            'password' => Hash::make('samaj@admin1234****'), // change in production
         ]);
     }
 }
