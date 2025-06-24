@@ -14,6 +14,9 @@ use App\Models\Donation;
 use App\Models\HomePageSetting;
 use App\Models\ServiceSection;
 use App\Models\Testimonial;
+use App\Models\District;
+use App\Models\City;
+
 
 class FrontEndController extends Controller
 {
@@ -48,8 +51,27 @@ class FrontEndController extends Controller
 
     public function sangathan()
     {
-        return view('front.pages.sangathan');
+        $districts = District::withCount('cities')->get(); // eager load city count
+        return view('front.pages.sangathan', compact('districts'));
     }
+    
+
+    public function show($id)
+   {
+    $district = District::with('cities')->findOrFail($id);
+    return view('front.pages.sangathan-show', compact('district'));
+   }
+
+   public function citySangathan($districtId, $cityId)
+  {
+    $district = District::findOrFail($districtId);
+    $city = City::with('sangathanMembers')->findOrFail($cityId);
+
+    // Group members by sector
+    $membersBySector = $city->sangathanMembers->groupBy('sector');
+
+    return view('front.pages.city-sangathan', compact('district', 'city', 'membersBySector'));
+   }
 
     public function kul_devta()
     {

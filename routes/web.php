@@ -32,6 +32,8 @@ Route::get('/', [FrontEndController::class, 'index'])->name('front.index');
 Route::get('/about', [FrontEndController::class, 'about'])->name('front.about');
 Route::get('/blog/{slug}', [FrontEndController::class, 'blog'])->name('front.blogs');
 Route::get('/sangathan', [FrontEndController::class, 'sangathan'])->name('front.sangathan');
+Route::get('/sangathan/{district}', [FrontEndController::class, 'show'])->name('front.sangathan.show');
+Route::get('/sangathan/{district}/{city}', [FrontEndController::class, 'citySangathan'])->name('front.sangathan.city');
 Route::get('/kul-devta', [FrontEndController::class, 'kul_devta'])->name('front.kul_devta');
 Route::get('/job-search', [FrontEndController::class, 'job_search'])->name('front.job_search');
 Route::get('/events', [FrontEndController::class, 'events'])->name('front.events');

@@ -58,7 +58,8 @@
                 </div>
                 <div class="col-lg-6 col-12">
                     <div class="right-content">
-                        <h2><img src="{{ asset('front_assets/assets/images/healthcare.svg') }}" alt="">Building Brighter Futures
+                        <h2><img src="{{ asset('front_assets/assets/images/healthcare.svg') }}" alt="">Building
+                            Brighter Futures
                             Through
                             Kindness.</h2>
                         <h3> Helping each other can
@@ -76,7 +77,8 @@
                             <div id="Tab1" class="tabcontent">
                                 <div class="tab-wrap">
                                     <div class="left">
-                                        <img src="{{ asset('front_assets/assets/images/about/about-5.jpg') }}" alt="">
+                                        <img src="{{ asset('front_assets/assets/images/about/about-5.jpg') }}"
+                                            alt="">
                                         <a href="https://www.youtube.com/embed/VqmFKnHG5q8?si=YcvnY_zzMv21k4iM"
                                             class="video-btn" data-type="iframe">
                                             <i class="flaticon-play"></i>
@@ -95,7 +97,8 @@
                             <div id="Tab2" class="tabcontent">
                                 <div class="tab-wrap">
                                     <div class="left">
-                                        <img src="{{ asset('front_assets/assets/images/about/about-6.jpg') }}" alt="">
+                                        <img src="{{ asset('front_assets/assets/images/about/about-6.jpg') }}"
+                                            alt="">
                                         <a href="https://www.youtube.com/embed/VqmFKnHG5q8?si=YcvnY_zzMv21k4iM"
                                             class="video-btn" data-type="iframe">
                                             <i class="flaticon-play"></i>
@@ -115,7 +118,8 @@
                             <div id="Tab3" class="tabcontent">
                                 <div class="tab-wrap">
                                     <div class="left">
-                                        <img src="{{ asset('front_assets/assets/images/about/about-7.jpg') }}" alt="">
+                                        <img src="{{ asset('front_assets/assets/images/about/about-7.jpg') }}"
+                                            alt="">
                                         <a href="https://www.youtube.com/embed/VqmFKnHG5q8?si=YcvnY_zzMv21k4iM"
                                             class="video-btn" data-type="iframe">
                                             <i class="flaticon-play"></i>
@@ -135,13 +139,17 @@
                         </div>
                         <div class="author-wrap">
                             <ul class="author-img">
-                                <li><img src="{{ asset('front_assets/assets/images/about/aut-1.jpg') }}" alt=""></li>
-                                <li class="active"><img src="{{ asset('front_assets/assets/images/about/aut-2.jpg') }}" alt="">
+                                <li><img src="{{ asset('front_assets/assets/images/about/aut-1.jpg') }}" alt="">
                                 </li>
-                                <li><img src="{{ asset('front_assets/assets/images/about/aut-3.jpg') }}" alt=""></li>
+                                <li class="active"><img src="{{ asset('front_assets/assets/images/about/aut-2.jpg') }}"
+                                        alt="">
+                                </li>
+                                <li><img src="{{ asset('front_assets/assets/images/about/aut-3.jpg') }}" alt="">
+                                </li>
                             </ul>
                             <div class="author-text">5m+ Customer <div class="shape"><img
-                                        src="{{ asset('front_assets/assets/images/about/shape10.svg') }}" alt=""></div>
+                                        src="{{ asset('front_assets/assets/images/about/shape10.svg') }}" alt="">
+                                </div>
                             </div>
                             <div class="contact">
                                 <div class="icon">
@@ -215,7 +223,8 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-12">
                     <div class="section-title">
-                        <span><img src="{{ asset('front_assets/assets/images/healthcare.svg') }}" alt="">Together, We Can
+                        <span><img src="{{ asset('front_assets/assets/images/healthcare.svg') }}"
+                                alt="">Together, We Can
                             Change Lives
                             Forever.</span>
                         <h2>Helping each other can
@@ -230,77 +239,33 @@
             </div>
         </div>
         <div class="service-slider-s4">
-            <div class="service-card-s2">
-                <div class="icon">
-                    <img src="{{ asset('front_assets/assets/images/service/icon-1.svg') }}" alt="">
-                </div>
-                <div class="content">
-                    <h2><a href="service-single.html">They get new home</a></h2>
-                    <p>With over 1 million+ homes for sale available
-                        on the website, Trulia can match you with
-                        a house you will want to call home.</p>
-                    <div class="services-btn">
-                        <a href="service-single.html">See Details </a>
+            @foreach ($districts as $district)
+                <div class="service-card-s2">
+                    <div class="icon">
+                        @if ($district->image)
+                            <img src="{{ asset('storage/' . $district->image) }}" alt="{{ $district->name }}">
+                        @else
+                            <img src="{{ asset('front_assets/assets/images/service/icon-1.svg') }}" alt="Default Icon">
+                        @endif
+                    </div>
+                    <div class="content">
+                        <h2>
+                            <a href="{{ route('front.sangathan.show', $district->id) }}">
+                                {{ $district->name }}
+                            </a>
+                        </h2>
+                        <p>
+                            {{ $district->cities_count ?? ($district->cities->count() ?? 0) }} Cities available in this
+                            district.
+                        </p>
+                        <div class="services-btn">
+                            <a href="{{ route('front.sangathan.show', $district->id) }}">See Details</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="service-card-s2">
-                <div class="icon">
-                    <img src="{{ asset('front_assets/assets/images/service/icon-2.svg') }}" alt="">
-                </div>
-                <div class="content">
-                    <h2><a href="service-single.html">Veterinary Helping</a></h2>
-                    <p>With over 1 million+ homes for sale available
-                        on the website, Trulia can match you with
-                        a house you will want to call home.</p>
-                    <div class="services-btn">
-                        <a href="service-single.html">See Details </a>
-                    </div>
-                </div>
-            </div>
-            <div class="service-card-s2">
-                <div class="icon">
-                    <img src="{{ asset('front_assets/assets/images/service/icon-3.svg') }}" alt="">
-                </div>
-                <div class="content">
-                    <h2><a href="service-single.html">Make Pets Happy</a></h2>
-                    <p>With over 1 million+ homes for sale available
-                        on the website, Trulia can match you with
-                        a house you will want to call home.</p>
-                    <div class="services-btn">
-                        <a href="service-single.html">See Details </a>
-                    </div>
-                </div>
-            </div>
-            <div class="service-card-s2">
-                <div class="icon">
-                    <img src="{{ asset('front_assets/assets/images/service/icon-4.svg') }}" alt="">
-                </div>
-                <div class="content">
-                    <h2><a href="service-single.html">Medical Care</a></h2>
-                    <p>With over 1 million+ homes for sale available
-                        on the website, Trulia can match you with
-                        a house you will want to call home.</p>
-                    <div class="services-btn">
-                        <a href="service-single.html">See Details </a>
-                    </div>
-                </div>
-            </div>
-            <div class="service-card-s2">
-                <div class="icon">
-                    <img src="{{ asset('front_assets/assets/images/service/icon-3.svg') }}" alt="">
-                </div>
-                <div class="content">
-                    <h2><a href="service-single.html">Natural healthy Food</a></h2>
-                    <p>With over 1 million+ homes for sale available
-                        on the website, Trulia can match you with
-                        a house you will want to call home.</p>
-                    <div class="services-btn">
-                        <a href="service-single.html">See Details </a>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
+
         <div class="shape">
             <img src="{{ asset('front_assets/assets/images/service/shape-4.png') }}" alt="">
         </div>
@@ -671,7 +636,8 @@
                             <div class="content_bottom">
                                 <span><a href="blog-single.html">Read More <i class="flaticon-next"></i></a></span>
                                 <span><a href="blog-single.html">
-                                        <img src="{{ asset('front_assets/assets/images/blog/business.svg') }}" alt="">
+                                        <img src="{{ asset('front_assets/assets/images/blog/business.svg') }}"
+                                            alt="">
                                         Business</a></span>
 
                             </div>
@@ -695,7 +661,8 @@
                             <div class="content_bottom">
                                 <span><a href="blog-single.html">Read More <i class="flaticon-next"></i></a></span>
                                 <span><a href="blog-single.html">
-                                        <img src="{{ asset('front_assets/assets/images/blog/business.svg') }}" alt="">
+                                        <img src="{{ asset('front_assets/assets/images/blog/business.svg') }}"
+                                            alt="">
                                         Business</a></span>
 
                             </div>
@@ -719,7 +686,8 @@
                             <div class="content_bottom">
                                 <span><a href="blog-single.html">Read More <i class="flaticon-next"></i></a></span>
                                 <span><a href="blog-single.html">
-                                        <img src="{{ asset('front_assets/assets/images/blog/business.svg') }}" alt="">
+                                        <img src="{{ asset('front_assets/assets/images/blog/business.svg') }}"
+                                            alt="">
                                         Business</a></span>
 
                             </div>
