@@ -93,7 +93,7 @@
                                 <li><a href="{{ route('front.sangathan') }}">Sangathan</a></li>
                                 <li class="menu-item-has-children"><a href="#">Events</a>
                                     <ul class="sub-menu">
-                                        <li><a href="{{ route('front.events') }}">Badhai</a></li>
+                                        <li><a href="{{ route('front.badhai') }}">Badhai</a></li>
                                         <li><a href="{{ route('front.events') }}">Shok Samachar</a></li>
                                         <li><a href="{{ route('front.events') }}">Today’s Birthday</a></li>
                                         <li><a href="{{ route('front.events') }}">News</a></li>

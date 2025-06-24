@@ -3,19 +3,22 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Front\FrontEndController;
+
+// Admin-related controllers
+use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\AdminMemberController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\RegisterSectionController;
 use App\Http\Controllers\Admin\AboutSectionController;
-use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\ServiceSectionController;
 use App\Http\Controllers\Admin\CaseStudyController;
 use App\Http\Controllers\Admin\DonationController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\HomeSettingController;
-use App\Http\Controllers\AdminAuthController;
-use App\Http\Controllers\AdminMemberController;
-
+use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\AdminBadhaiController;
+// use App\Http\Controllers\Front\FrontEndController;
 // ========== USER ROUTES ==========
 
 Route::get('/dashboard', function () {
@@ -42,6 +45,7 @@ Route::get('/contact', [FrontEndController::class, 'contact'])->name('front.cont
 Route::get('/register-member', [FrontEndController::class, 'register_member'])->name('front.register_member');
 Route::post('/store-member', [FrontEndController::class, 'store_member'])->name('front.store_member');
 Route::get('/thank-you', [FrontEndController::class, 'thankyou'])->name('thankyou');
+Route::get('/badhai', [FrontEndController::class, 'badhai'])->name('front.badhai');
 
 // ========== ADMIN LOGIN + PROTECTED ROUTES ==========
 
@@ -54,9 +58,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Admin-only routes
     Route::middleware('auth:admin')->group(function () {
         Route::get('dashboard', fn() => view('admin.dashboard'))->name('dashboard');
+         
+        Route::resource('badhai', AdminBadhaiController::class); 
+        // ✅ Key fix: ensure this uses the correct controller
         Route::resource('members', AdminMemberController::class);
 
-        // Existing admin modules (now under auth:admin)
+        // Other admin module routes
         Route::resource('sliders', SliderController::class);
         Route::post('sliders/toggle-status/{id}', [SliderController::class, 'toggleStatus'])->name('sliders.toggle-status');
 

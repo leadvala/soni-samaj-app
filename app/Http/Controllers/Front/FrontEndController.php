@@ -14,9 +14,13 @@ use App\Models\Donation;
 use App\Models\HomePageSetting;
 use App\Models\ServiceSection;
 use App\Models\Testimonial;
+<<<<<<< HEAD
 use App\Models\District;
 use App\Models\City;
 
+=======
+use App\Models\BadhaiEntry;
+>>>>>>> 10de03741c70a091d81680a69c89edc1a1c5dc5a
 
 class FrontEndController extends Controller
 {
@@ -93,68 +97,93 @@ class FrontEndController extends Controller
         return view('front.pages.event_detail');
     }
 
+
+    public function badhai()
+{
+    $badhaiEntries = BadhaiEntry::latest()->paginate(12); // Paginate by 12 per page
+    return view('front.badhai.index', compact('badhaiEntries'));
+}
+
     public function contact()
     {
         return view('front.pages.contact');
     }
 
-    public function register_member()
-    {
-        return view('front.pages.register_member');
-    }
+ 
+    public function register_member(){
+  $religiousList = ['Place A','Place B']; // adjust
+  $gotraList = ['Rundwal','Bamlaa'];
+  return view('front.pages.register_member', compact('religiousList','gotraList'));
+}
+
    
 public function store_member(Request $request)
 {
     $request->validate([
-        'name' => 'required',
-        'father_name' => 'required',
-        'mother_name' => 'required',
-        'dob' => 'required|date',
-        'gender' => 'required',
-        'marital_status' => 'required',
-        'address' => 'required',
-        'permanent_address' => 'required',
-        'gotra_self' => 'required',
-        'gotra_mother' => 'required',
-        'gotra_nani' => 'required',
-        'gotra_dadi' => 'required',
-        'qualifications' => 'required',
-        'blood_group' => 'required',
-        'mobile' => 'required',
-        'whatsapp' => 'required',
-        'photo' => 'required|image|mimes:jpg,jpeg,png',
+        'name'               => 'required|string',
+        'father_name'        => 'required|string',
+        'mother_name'        => 'required|string',
+        'dob'                => 'required|date',
+        'gender'             => 'required|in:Male,Female,Other',
+        'marital_status'     => 'required|in:Single,Married,Divorced,Widow',
+        'address'            => 'required|string',
+        'permanent_address'  => 'required|string',
+        'district'           => 'required|string',
+        'area'               => 'required|string',
+        'gotra_self'         => 'required|string',
+        'gotra_mother'       => 'required|string',
+        'gotra_nani'         => 'required|string',
+        'gotra_dadi'         => 'required|string',
+        'qualifications'     => 'required|string',
+        'blood_group'        => 'required|string',
+        'mobile'             => 'required|string',
+        'whatsapp'           => 'required|string',
+        'photo'              => 'required|image|mimes:jpg,jpeg,png',
+        'job_or_business'    => 'required|in:Job,Business',
+        'business_name'      => 'required_if:job_or_business,Business|string',
+        'business_location'  => 'required_if:job_or_business,Business|string',
+        'job_type'           => 'nullable|in:Private,Government',
+        'designation'        => 'nullable|string',
+        'work_place'         => 'nullable|string',
+        'satimata_place'     => 'nullable|string',
+        'bheruji_place'      => 'nullable|string',
+        'kuldevi_place'      => 'nullable|string',
     ]);
 
     $photoPath = $request->file('photo')->store('uploads/members', 'public');
 
     Member::create([
-        'name' => $request->name,
-        'father_name' => $request->father_name,
-        'mother_name' => $request->mother_name,
-        'dob' => $request->dob,
-        'gender' => $request->gender,
-        'marital_status' => $request->marital_status,
-        'address' => $request->address,
-        'permanent_address' => $request->permanent_address,
-        'gotra_self' => $request->gotra_self,
-        'gotra_mother' => $request->gotra_mother,
-        'gotra_nani' => $request->gotra_nani,
-        'gotra_dadi' => $request->gotra_dadi,
-        'qualifications' => $request->qualifications,
-        'blood_group' => $request->blood_group,
-        'mobile' => $request->mobile,
-        'whatsapp' => $request->whatsapp,
-        'photo' => $photoPath,
-        'job_or_business' => $request->job_or_business,
-        'job_type' => $request->job_type,
-        'designation' => $request->designation,
-        'work_city' => $request->work_city,
-        'satimata_place' => $request->satimata_place,
-        'bheruji_place' => $request->bheruji_place,
-        'kuldevi_place' => $request->kuldevi_place,
+        'name'               => $request->name,
+        'father_name'        => $request->father_name,
+        'mother_name'        => $request->mother_name,
+        'dob'                => $request->dob,
+        'gender'             => $request->gender,
+        'marital_status'     => $request->marital_status,
+        'address'            => $request->address,
+        'permanent_address'  => $request->permanent_address,
+        'district'           => $request->district,
+        'area'               => $request->area,
+        'gotra_self'         => $request->gotra_self,
+        'gotra_mother'       => $request->gotra_mother,
+        'gotra_nani'         => $request->gotra_nani,
+        'gotra_dadi'         => $request->gotra_dadi,
+        'qualifications'     => $request->qualifications,
+        'blood_group'        => $request->blood_group,
+        'mobile'             => $request->mobile,
+        'whatsapp'           => $request->whatsapp,
+        'photo'              => $photoPath,
+        'job_or_business'    => $request->job_or_business,
+        'business_name'      => $request->business_name,
+        'business_location'  => $request->business_location,
+        'job_type'           => $request->job_type,
+        'designation'        => $request->designation,
+        'work_place'         => $request->work_place,
+        'satimata_place'     => $request->satimata_place,
+        'bheruji_place'      => $request->bheruji_place,
+        'kuldevi_place'      => $request->kuldevi_place,
     ]);
 
-         return redirect()->route('thankyou');
+    return redirect()->route('thankyou');
 }
 
     public function thankyou()

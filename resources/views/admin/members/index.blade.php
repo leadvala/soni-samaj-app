@@ -16,6 +16,32 @@
   .member-card .row + .row {
     margin-top: .5rem;
   }
+  .pagination .page-link {
+  padding: 0.375rem 0.75rem !important;
+  font-size: 0.875rem !important;
+}
+/* Fix large pagination arrows issue */
+  .pagination .page-item:first-child .page-link,
+  .pagination .page-item:last-child .page-link {
+    font-size: 1rem !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pagination .page-item:first-child .page-link::before {
+    content: "«";
+  }
+
+  .pagination .page-item:last-child .page-link::before {
+    content: "»";
+  }
+
+  /* Hide default ugly arrows if present */
+  .pagination .page-item:first-child .page-link > *,
+  .pagination .page-item:last-child .page-link > * {
+    display: none !important;
+  }
 </style>
 
 <div class="container-fluid px-4 py-3">

@@ -8,72 +8,77 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminMemberController extends Controller
 {
-    /**
-     * Display a listing of members with search & pagination.
-     */
+     // Dropdown options
+    protected array $gotras = [
+        'Garg',
+        'Bharadwaj',
+        'Vasishtha',
+        'Sandilya',
+        // ...add more
+    ];
+
+    protected array $religiousList = [
+        'Sundha Mata',
+        'Ambaji',
+        'Mandir A',
+        'Mandir B',
+        // ...add more
+    ];
+ // ✅ Add this index() method
     public function index(Request $request)
-{
-    $search = $request->query('search');
+    {
+        $search = $request->query('search');
+        $members = Member::query()
+            ->when($search, fn($q) => $q
+                ->where('name', 'like', "%{$search}%")
+                ->orWhere('gotra', 'like', "%{$search}%")
+                ->orWhere('mobile', 'like', "%{$search}%"))
+            ->paginate(10)
+            ->withQueryString();
 
-    $members = Member::query()
-        ->when($search, function($query, $search) {
-            $query->where(function($q) use ($search) {
-                $q->where('name',            'like', "%{$search}%")
-                  ->orWhere('gotra',         'like', "%{$search}%")
-                  ->orWhere('gotra_self',    'like', "%{$search}%")
-                  ->orWhere('gotra_mother',  'like', "%{$search}%")
-                  ->orWhere('gotra_nani',    'like', "%{$search}%")
-                  ->orWhere('gotra_dadi',    'like', "%{$search}%")
-                  ->orWhere('mobile',        'like', "%{$search}%");
-            });
-        })
-        ->paginate(10)
-        ->withQueryString();
-
-    return view('admin.members.index', compact('members', 'search'));
-}
-
-
-    /**
-     * Show the form for creating a new member.
-     */
+        return view('admin.members.index', compact('members', 'search'));
+    }
     public function create()
     {
-        return view('admin.members.create');
+        return view('admin.members.create', [
+            'gotras'        => $this->gotras,
+            'religiousList' => $this->religiousList,
+        ]);
     }
 
-    /**
-     * Store a newly created member in storage.
-     */
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name'                => 'required|string|max:255',
-            'father_name'         => 'nullable|string|max:255',
-            'mother_name'         => 'nullable|string|max:255',
-            'gotra'               => 'nullable|string|max:255',
-            'gotra_self'          => 'nullable|string|max:255',
-            'gotra_mother'        => 'nullable|string|max:255',
-            'gotra_nani'          => 'nullable|string|max:255',
-            'gotra_dadi'          => 'nullable|string|max:255',
-            'marital_status'      => 'nullable|string|max:50',
-            'dob'                 => 'nullable|date',
-            'address'             => 'nullable|string',
-            'permanent_address'   => 'nullable|string',
-            'photo'               => 'nullable|image|max:2048',
-            'qualifications'      => 'nullable|string|max:255',
-            'gender'              => 'nullable|string|max:50',
-            'blood_group'         => 'nullable|string|max:3',
-            'house_type'          => 'nullable|string|max:100',
-            'job_or_business'     => 'nullable|string|max:100',
-            'job_type'            => 'nullable|string|max:50',
-            'designation'         => 'nullable|string|max:255',
-            'work_city'           => 'nullable|string|max:255',
-            'mobile'              => 'required|string|max:20',
-            'whatsapp'            => 'nullable|string|max:20',
-            'satimata_place'      => 'nullable|string|max:255',
-            'bheruji_place'       => 'nullable|string|max:255',
-            'kuldevi_place'       => 'nullable|string|max:255',
+            'name'               => 'required|string|max:255',
+            'father_name'        => 'nullable|string|max:255',
+            'mother_name'        => 'nullable|string|max:255',
+            'dob'                => 'nullable|date',
+            'gender'             => 'required|string|max:50',
+            'marital_status'     => 'required|string|max:50',
+            'address'            => 'required|string',
+            'permanent_address'  => 'required|string',
+            'district'           => 'required|string|max:255',
+            'work_place'         => 'required|string|max:255',
+            'area'               => 'required|string',
+            'gotra'              => 'required|string|max:255',
+            'gotra_self'         => 'nullable|string|max:255',
+            'gotra_mother'       => 'nullable|string|max:255',
+            'gotra_nani'         => 'nullable|string|max:255',
+            'gotra_dadi'         => 'nullable|string|max:255',
+            'satimata_place'     => 'nullable|string|max:255',
+            'bheruji_place'      => 'nullable|string|max:255',
+            'kuldevi_place'      => 'nullable|string|max:255',
+            'qualifications'     => 'required|string|max:255',
+            'blood_group'        => 'required|string|max:3',
+            'mobile'             => 'required|string|max:20',
+            'whatsapp'           => 'nullable|string|max:20',
+            'job_or_business'    => 'nullable|string|max:100',
+            'business_name'      => 'nullable|string|max:255',
+            'business_location'  => 'nullable|string|max:255',
+            'job_type'           => 'nullable|string|max:50',
+            'designation'        => 'nullable|string|max:255',
+            'work_place'         => 'nullable|string|max:255',
+            'photo'              => 'nullable|image|max:2048',
         ]);
 
         if ($request->hasFile('photo')) {
@@ -87,71 +92,64 @@ class AdminMemberController extends Controller
             ->with('success', 'New member added successfully.');
     }
 
-    /**
-     * Show the form for editing the specified member.
-     */
     public function edit(Member $member)
     {
         return view('admin.members.edit', compact('member'));
     }
 
-    /**
-     * Update the specified member in storage.
-     */
-    public function update(Request $request, Member $member)
-    {
-        $data = $request->validate([
-            'name'                => 'required|string|max:255',
-            'father_name'         => 'nullable|string|max:255',
-            'mother_name'         => 'nullable|string|max:255',
-            'gotra'               => 'nullable|string|max:255',
-            'gotra_self'          => 'nullable|string|max:255',
-            'gotra_mother'        => 'nullable|string|max:255',
-            'gotra_nani'          => 'nullable|string|max:255',
-            'gotra_dadi'          => 'nullable|string|max:255',
-            'marital_status'      => 'nullable|string|max:50',
-            'dob'                 => 'nullable|date',
-            'address'             => 'nullable|string',
-            'permanent_address'   => 'nullable|string',
-            'photo'               => 'nullable|image|max:2048',
-            'qualifications'      => 'nullable|string|max:255',
-'gender' => 'required|string|max:50',
-            'blood_group'         => 'nullable|string|max:3',
-            'house_type'          => 'nullable|string|max:100',
-            'job_or_business'     => 'nullable|string|max:100',
-            'job_type'            => 'nullable|string|max:50',
-            'designation'         => 'nullable|string|max:255',
-            'work_city'           => 'nullable|string|max:255',
-            'mobile'              => 'required|string|max:20',
-            'whatsapp'            => 'nullable|string|max:20',
-            'satimata_place'      => 'nullable|string|max:255',
-            'bheruji_place'       => 'nullable|string|max:255',
-            'kuldevi_place'       => 'nullable|string|max:255',
-        ]);
+public function update(Request $request, Member $member)
+{
+    $data = $request->validate([
+        'name'               => 'required|string|max:255',
+        'father_name'        => 'nullable|string|max:255',
+        'mother_name'        => 'nullable|string|max:255',
+        'dob'                => 'nullable|date',
+        'gender'             => 'nullable|string|max:50',
+        'marital_status'     => 'required|string|max:50',
+        'address'            => 'required|string',
+        'permanent_address'  => 'required|string',
+        'district'           => 'required|string|max:255',
+        'city'               => 'required|string|max:255',
+        'area'               => 'nullable|string',
+        'gotra'              => 'nullable|string|max:255',
+        'gotra_self'         => 'nullable|string|max:255',
+        'gotra_mother'       => 'nullable|string|max:255',
+        'gotra_nani'         => 'nullable|string|max:255',
+        'gotra_dadi'         => 'nullable|string|max:255',
+        'satimata_place'     => 'nullable|string|max:255',
+        'bheruji_place'      => 'nullable|string|max:255',
+        'kuldevi_place'      => 'nullable|string|max:255',
+        'qualifications'     => 'required|string|max:255',
+        'blood_group'        => 'nullable|string|max:3',
+        'mobile'             => 'required|string|max:20',
+        'whatsapp'           => 'nullable|string|max:20',
+        'job_or_business'    => 'nullable|string|max:100',
+        'business_name'      => 'nullable|string|max:255',
+        'business_location'  => 'nullable|string|max:255',
+        'job_type'           => 'nullable|string|max:50',
+        'designation'        => 'nullable|string|max:255',
+        'work_city'          => 'nullable|string|max:255',
+        'photo'              => 'nullable|image|max:2048',
+    ]);
 
-        if ($request->hasFile('photo')) {
-            if ($member->photo) {
-                Storage::disk('public')->delete($member->photo);
-            }
-            $data['photo'] = $request->file('photo')->store('members/photos', 'public');
+    if ($request->hasFile('photo')) {
+        if ($member->photo) {
+            Storage::disk('public')->delete($member->photo);
         }
-
-        $member->update($data);
-
-        return redirect()
-            ->route('admin.members.index')
-            ->with('success', 'Member updated successfully.');
+        $data['photo'] = $request->file('photo')->store('members/photos', 'public');
     }
 
-    /**
-     * Remove the specified member from storage.
-     */
+    $member->update($data);
+
+    return redirect()->route('admin.members.index')->with('success', 'Member updated successfully.');
+}
+
+
     public function destroy(Member $member)
     {
         if ($member->photo) {
             Storage::disk('public')->delete($member->photo);
         }
-
         $member->delete();
 
         return back()->with('success', 'Member deleted successfully.');
