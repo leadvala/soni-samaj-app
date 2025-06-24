@@ -14,13 +14,10 @@ use App\Models\Donation;
 use App\Models\HomePageSetting;
 use App\Models\ServiceSection;
 use App\Models\Testimonial;
-<<<<<<< HEAD
 use App\Models\District;
 use App\Models\City;
 
-=======
 use App\Models\BadhaiEntry;
->>>>>>> 10de03741c70a091d81680a69c89edc1a1c5dc5a
 
 class FrontEndController extends Controller
 {
