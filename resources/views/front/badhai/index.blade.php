@@ -37,6 +37,7 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    
   }
 
   /* .badhai-card-img-container img {
